@@ -20,7 +20,6 @@
 
 import Route from '@ioc:Adonis/Core/Route'
 const favoritos = [{ id: 1, nome: 'Google', url: 'http://www.google.com', importante: true }]
-
 Route.get('/', async () => {
   return { app: 'favio-back' }
 })
@@ -47,4 +46,17 @@ Route.post('/favoritos', async ({ request, response }) => {
   const newFavorito = { id: favoritos.length, nome, url, importante }
   favoritos.push(newFavorito)
   return response.status(201).send(newFavorito)
+})
+
+//Rota deleta favorito pelo id
+Route.delete('/favoritos/:id', async ({ params, response }) => {
+  // eslint-disable-next-line eqeqeq
+  let favoritoEncontrado = favoritos.find((favorito) => favorito.id == params.id)
+  if (!favoritoEncontrado) {
+    return response.status(404).send({ error: 'Favorite not found' })
+  }
+
+  const index = favoritos.indexOf(favoritoEncontrado)
+  favoritos.splice(index, 1)
+  return response.status(204)
 })
