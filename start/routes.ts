@@ -53,10 +53,24 @@ Route.delete('/favoritos/:id', async ({ params, response }) => {
   // eslint-disable-next-line eqeqeq
   let favoritoEncontrado = favoritos.find((favorito) => favorito.id == params.id)
   if (!favoritoEncontrado) {
-    return response.status(404).send({ error: 'Favorite not found' })
+    return response.status(404).json({ error: 'Favorite not found' })
   }
 
   const index = favoritos.indexOf(favoritoEncontrado)
   favoritos.splice(index, 1)
   return response.status(204)
+})
+
+//Rota deleta favorito pelo id
+Route.put('/favoritos/:id', async ({ params, request, response }) => {
+  const { nome, url, importante } = request.body()
+  // eslint-disable-next-line eqeqeq
+  let favoritoEncontrado = favoritos.find((favorito) => favorito.id == params.id)
+  if (!favoritoEncontrado) {
+    return response.status(404).json({ error: 'Favorite not found' })
+  }
+
+  const index = favoritos.indexOf(favoritoEncontrado)
+  favoritos[index] = { id: index, nome, url, importante }
+  return response.status(201).json({ id: index, nome, url, importante })
 })
