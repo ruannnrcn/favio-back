@@ -19,7 +19,7 @@
 */
 
 import Route from '@ioc:Adonis/Core/Route'
-const favoritos=[{id:1,nome:'Google',url:"http://www.google.com",importante:true}]
+const favoritos = [{ id: 1, nome: 'Google', url: 'http://www.google.com', importante: true }]
 
 Route.get('/', async () => {
   return { app: 'favio-back' }
@@ -28,15 +28,23 @@ Route.get('/', async () => {
 Route.get('/favoritos', async () => {
   return favoritos
 })
-Route.get('/favoritos/:id', async ({params}) => {
+Route.get('/favoritos/:id', async ({ params }) => {
   // retorna o objeto caso exista, senao retornar objeto vazio {}
   //funcao callback
-  let favoritoEncontrado=favoritos.find((favorito)=>favorito.id==params.id)
-  if favoritoEncontrado==undefined
-    return {msg:'favorito nao encontrado'}
+  // eslint-disable-next-line eqeqeq
+  let favoritoEncontrado = favoritos.find((favorito) => favorito.id == params.id)
+  if (favoritoEncontrado === undefined) return { msg: 'favorito nao encontrado' }
   return favoritoEncontrado
 })
 //Rota procura favorito pelo nome
-Route.get('/favoritos/:nome', async ({params}) => {
-  return {id:1,nome:params.nome,url:"http://www.google.com",importante:true}
+Route.get('/favoritos/:nome', async ({ params }) => {
+  return { id: 1, nome: params.nome, url: 'http://www.google.com', importante: true }
+})
+
+//Rota procura favorito pelo nome
+Route.post('/favoritos', async ({ request, response }) => {
+  const { nome, url, importante } = request.body()
+  const newFavorito = { id: favoritos.length, nome, url, importante }
+  favoritos.push(newFavorito)
+  return response.status(201).send(newFavorito)
 })
