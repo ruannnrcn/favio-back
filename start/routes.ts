@@ -74,3 +74,5 @@ Route.put('/favoritos/:id', async ({ params, request, response }) => {
   favoritos[index] = { id: index, nome, url, importante }
   return response.status(201).json({ id: index, nome, url, importante })
 })
+
+Route.resource('bookmarks', 'BookmarksController').apiOnly()
