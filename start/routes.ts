@@ -28,15 +28,23 @@ Route.get('/', async () => {
 Route.get('/favoritos', async () => {
   return favoritos
 })
-Route.get('/favoritos/:id', async ({params}) => {
+Route.get('/favoritos/:id', async ({params,response}) => {
   // retorna o objeto caso exista, senao retornar objeto vazio {}
   //funcao callback
   let favoritoEncontrado=favoritos.find((favorito)=>favorito.id==params.id)
   if favoritoEncontrado==undefined
-    return {msg:'favorito nao encontrado'}
+    return response.status(404)
   return favoritoEncontrado
 })
 //Rota procura favorito pelo nome
 Route.get('/favoritos/:nome', async ({params}) => {
   return {id:1,nome:params.nome,url:"http://www.google.com",importante:true}
+})
+
+//Rota post para criar um novo favorito
+Route.post('/favoritos', async ({request,response})=>{
+ const {nome,url,importante}=request.body()
+ const newFavorito={id:favoritos.length+1,nome,url,importante}
+ favoritos.push(newFavorito)
+ return response.status(201).send(newFavorito)
 })
