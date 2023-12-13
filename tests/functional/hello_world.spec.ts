@@ -6,7 +6,6 @@ test('display welcome page', async ({ client }) => {
   response.assertStatus(200)
   response.assertBodyContains({ app: 'favio-back' })
 })
-
 // test('nome do app', async({client})=> {
 //   const request= await client.get('/')
 //   request.assertStatus(200)
